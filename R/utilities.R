@@ -6,7 +6,7 @@ listadd = function(a,b){
 }
 
 list2matrix = function(vlist,bNAasZero=TRUE) {
-   if(class(vlist)=="list"){
+   if(sum(class(vlist)=="list")){
       maxlen = max(sapply(vlist,length))
       vlist = lapply(vlist,function(x){extend(x,maxlen,bNAasZero)})
       res = matrix(0,maxlen,length(vlist))
@@ -16,7 +16,7 @@ list2matrix = function(vlist,bNAasZero=TRUE) {
       colnames(res) = names(vlist)
       rownames(res) = 1:nrow(res)
       return(res)
-   }else{
+   } else {
       return(vlist)
    }
 }

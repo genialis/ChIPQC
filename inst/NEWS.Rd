@@ -4,6 +4,12 @@
 
 \section{Version 1.13.2}{
  \itemize{
+  \item{Fix build issue}
+  }
+}
+
+\section{Version 1.13.2}{
+ \itemize{
   \item{Fixed bug when specifying consensus peakset as GRanges}
   }
 }

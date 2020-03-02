@@ -24,11 +24,11 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
                   consensus=FALSE, bCount=FALSE, mapQCth=15, blacklist=NULL, 
                   profileWin=400,fragmentLength=125,shifts=1:300,...) {
   
-  if(class(experiment)=="character" || class(experiment)=="data.frame") {
+  if(sum(class(experiment)=="character") || sum(class(experiment)=="data.frame")) {
     experiment = dba(sampleSheet=experiment,bCorPlot=FALSE,peakCaller="bed")
   } 
   
-  if(class(experiment)!="DBA") {
+  if(!sum(class(experiment)=="DBA")) {
     stop("experiment must be either a samplesheet filename or a DBA (DiffBind) object.")
   }
   
@@ -70,7 +70,7 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
   
   if(!missing(annotation)) {
     if(!is.null(annotation) && missing(samples)) {
-      if(class(annotation)!="list") {
+      if(!sum(class(annotation)=="list")) {
         message('Compiling annotation...')
         annotation = getAnnotation(annotation,AllChr=chromosomes)
       }
@@ -80,7 +80,7 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
         blacklist = makeGRangesFromDataFrame(blacklist,ignore.strand=TRUE)
         message("Using default blacklist for hg19...")
       }
-    } else if(class(annotation)=="character") {
+    } else if(sum(class(annotation)=="character")) {
       annotation = list(version=annotation)
     } else {
       annotation = list(version="none")
@@ -129,10 +129,10 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
   setNull <- TRUE   
   peaks <- NA
   
-  if(class(consensus) == "GRanges") {
+  if(sum(class(consensus) == "GRanges")) {
     useConsensus <- TRUE
   } else {
-    if(class(consensus) == "logical") {
+    if(sum(class(consensus) == "logical")){
       if(consensus == TRUE) {
         useConsensus <- TRUE
       } else {
@@ -146,7 +146,7 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
   if(useConsensus == TRUE) {
     addcontrols  <- TRUE
     addconsensus <- TRUE
-    if(class(consensus) == "GRanges") {
+    if(sum(class(consensus) == "GRanges")) {
       peaks <- consensus
       setNull <- FALSE   
     } else {
@@ -219,7 +219,7 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
     errors = FALSE
     for(i in 1:length(samples)) {
       sample = samples[[i]]
-      if(class(sample) != "ChIPQCsample") {
+      if(!sum(class(sample) == "ChIPQCsample")) {
         message("Error in sample ",names(samples)[i],": ",sample[1])
         errors = TRUE
       }

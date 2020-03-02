@@ -54,11 +54,11 @@ sampleQC <- function(bamFile,bedFile=NULL,blklist=NULL,ChrOfInterest=NULL,GeneAn
   txdb <- NULL
   GeneAnnotationTotalSizes <- NULL
 
-  if(class(GeneAnnotation)!="list" & !is.null(GeneAnnotation)) {
+  if(!sum(class(GeneAnnotation)=="list") & !is.null(GeneAnnotation)) {
     GeneAnnotation = getAnnotation(GeneAnnotation,AllChr=names(ChrLengths))
     
   }
-  if(class(GeneAnnotation)=="list"){
+  if(sum(class(GeneAnnotation)=="list")){
     if(length(GeneAnnotation)>1) {
       GeneAnnotation <- GeneAnnotation[!names(GeneAnnotation) %in% "version"]
       GeneAnnotation <- lapply(GeneAnnotation,function(x)reduce(GetGRanges(x,names(ChrLengths))))
@@ -193,7 +193,7 @@ sampleQC <- function(bamFile,bedFile=NULL,blklist=NULL,ChrOfInterest=NULL,GeneAn
       }else{
         SSDBL <- NULL
       }
-      if(class(GeneAnnotation)=="list"){
+      if(sum(class(GeneAnnotation)=="list")){
         #GRangesOfInterestListGA <- GRangesList()
         noVersionGeneAnnotation <- GeneAnnotation[!names(GeneAnnotation)=="version"]
         GRangesOfInterestListGF <- GRangesList()
@@ -324,7 +324,7 @@ sampleQC <- function(bamFile,bedFile=NULL,blklist=NULL,ChrOfInterest=NULL,GeneAn
     SSDBLAv <- as.numeric(NA)     
   }   
   
-  if(class(GeneAnnotation)=="list" & !is.null(GFCountsMatrix)){
+  if(sum(class(GeneAnnotation)=="list") & !is.null(GFCountsMatrix)){
     #CountsInFeatures <-vector("list",length=ncol(GFCountsMatrix))
     CountsInFeatures <- as.list(apply(GFCountsMatrix,2,function(x)sum(x,na.rm=TRUE)))
     names(CountsInFeatures) <- colnames(GFCountsMatrix)
@@ -423,15 +423,15 @@ GetGRanges <- function(LoadFile,AllChr=NULL,ChrOfInterest=NULL,simple=FALSE,sepr
   #    require(Rsamtools)
   #    require(GenomicRanges)
   
-  if(class(LoadFile) == "GRanges"){
+  if(sum(class(LoadFile) == "GRanges")) {
     RegionRanges <- LoadFile
     if(simplify){
       RegionRanges <- GRanges(seqnames(RegionRanges),ranges(RegionRanges))
     }
   }else{
-    if(class(LoadFile) == "character"){
+    if(sum(class(LoadFile) == "character")){
       RangesTable <- read.delim(LoadFile,sep=sepr,header=TRUE,comment.char="#")
-    }else if(class(LoadFile) == "matrix"){
+    } else if(sum(class(LoadFile) == "matrix")) {
       RangesTable <- as.data.frame(LoadFile)
     } else{
       RangesTable <- as.data.frame(LoadFile)

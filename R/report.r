@@ -25,7 +25,7 @@ makeSummarySection <- function(object){
   summarySection <- newSection( "QC Summary" );
   
   metrics <- QCmetrics(object)
-  if(class(object)=="ChIPQCexperiment"){
+  if(sum(class(object)=="ChIPQCexperiment")){
     metrics <- metrics[,!colnames(metrics) %in% c("ReadLenCC","RIBL","Map%","Filt%","ReadLen")]
     allMetadata <- QCmetadata(object)
     metadata <- allMetadata[,c("ID","Tissue","Factor","Condition","Replicate")]
@@ -136,7 +136,7 @@ makeMFDSection <- function(object,riblPlot,gfePlot){
                              "Total Dup%",
                              "Pass MapQ Filter%",
                              "Pass MapQ Filter and Dup%")
-  if(class(object)=="ChIPQCexperiment"){
+  if(sum(class(object)=="ChIPQCexperiment")){
     allMetadata <- QCmetadata(object)
     metadata <- allMetadata[,c("ID","Tissue","Factor","Condition","Replicate")]
     
