@@ -12,20 +12,20 @@ setMethod("show","ChIPQCsample",
           function (object){
              message("\t\t\t\t\t",class(object),"")
              message("Number of Mapped reads: ",object@FlagAndTagCounts[2],"")
-             message("Number of Mapped reads passing MapQ filter: ",object@FlagAndTagCounts[4],"")    
-             message("Percentage Of Reads as Non-Duplicates (NRF): ",round((((object@FlagAndTagCounts[2])-(object@FlagAndTagCounts[5]))/object@FlagAndTagCounts[2])*100, digits=2),"(",round(object@FlagAndTagCounts[5]/object@FlagAndTagCounts[2],digits=2),")","")            
-             message("Percentage Of Reads in Blacklisted Regions: ",round((object@CountsInBlackList/object@FlagAndTagCounts[2])*100),"")            
-             
+             message("Number of Mapped reads passing MapQ filter: ",object@FlagAndTagCounts[4],"")
+             message("Percentage Of Reads as Non-Duplicates (NRF): ",round((((object@FlagAndTagCounts[2])-(object@FlagAndTagCounts[5]))/object@FlagAndTagCounts[2])*100, digits=2),"(",round(object@FlagAndTagCounts[5]/object@FlagAndTagCounts[2],digits=2),")","")
+             message("Percentage Of Reads in Blacklisted Regions: ",round((object@CountsInBlackList/object@FlagAndTagCounts[2])*100),"")
+
              message("SSD: ",object@SSD,"")
              message("Fragment Length Cross-Coverage: ",FragmentLengthCrossCoverage(object),"")
              message("Relative Cross-Coverage: ",RelativeCrossCoverage(object),"")
-             
+
              message("Percentage Of Reads in GenomicFeature: ")
              print(data.frame(ProportionOfCounts=unlist(object@CountsInFeatures),row.names=gsub("CountsIn","",names(object@CountsInFeatures)))/object@FlagAndTagCounts[4])
-             
-             message("Percentage Of Reads in Peaks: ",round((object@CountsInPeaks/object@FlagAndTagCounts[4])*100,digits=2),"")            
-             message("Number of Peaks: ",length(object),"")    
-             
+
+             message("Percentage Of Reads in Peaks: ",round((object@CountsInPeaks/object@FlagAndTagCounts[4])*100,digits=2),"")
+             message("Number of Peaks: ",length(object),"")
+
              print(granges(object, use.mcols=TRUE))
           }
 )
@@ -44,20 +44,20 @@ setMethod("fragmentlength", "ChIPQCsample", function(object,width){
 })
 
 setGeneric("FragmentLengthCrossCoverage", function(object="ChIPQCsample",width) standardGeneric("FragmentLengthCrossCoverage"))
-setMethod("FragmentLengthCrossCoverage", signature(object="ChIPQCsample"), function(object){ 
+setMethod("FragmentLengthCrossCoverage", signature(object="ChIPQCsample"), function(object){
    FragmentLengthCrossCoverage <- crosscoverage(object)[fragmentlength(object,10)]-crosscoverage(object)[1]
    return(FragmentLengthCrossCoverage)
 }
 )
 setGeneric("ReadLengthCrossCoverage", function(object="ChIPQCsample",width) standardGeneric("ReadLengthCrossCoverage"))
-setMethod("ReadLengthCrossCoverage", signature(object="ChIPQCsample"), function(object){ 
+setMethod("ReadLengthCrossCoverage", signature(object="ChIPQCsample"), function(object){
    ReadLengthCrossCoverage <-  crosscoverage(object)[readlength(object)]-crosscoverage(object)[1]
    return(ReadLengthCrossCoverage)
 }
 )
 
 setGeneric("RelativeCrossCoverage", function(object="ChIPQCsample",width) standardGeneric("RelativeCrossCoverage"))
-setMethod("RelativeCrossCoverage", signature(object="ChIPQCsample"), function(object){ 
+setMethod("RelativeCrossCoverage", signature(object="ChIPQCsample"), function(object){
    RelativeCrossCoverage <- FragmentLengthCrossCoverage(object)/ReadLengthCrossCoverage(object)
    return(RelativeCrossCoverage)
 }
@@ -121,9 +121,9 @@ setMethod("regi", "ChIPQCsample", function(object){
 
 setGeneric("frip", function(object="ChIPQCsample") standardGeneric("frip"))
 setMethod("frip", "ChIPQCsample", function(object){
-   CountsInPeaks <- object@CountsInPeaks  
+   CountsInPeaks <- object@CountsInPeaks
    TotalCounts <- object@FlagAndTagCounts["Mapped"]
-   FRIP <- unname(CountsInPeaks/TotalCounts)  
+   FRIP <- unname(CountsInPeaks/TotalCounts)
    return(FRIP)
 }
 )
@@ -142,7 +142,7 @@ setMethod("ribl", "ChIPQCsample", function(object){
 
 setGeneric("mapped", function(object="ChIPQCsample") standardGeneric("mapped"))
 setMethod("mapped", "ChIPQCsample", function(object){
-   MappedCounts <- unname(object@FlagAndTagCounts[2])  
+   MappedCounts <- unname(object@FlagAndTagCounts[2])
    return(MappedCounts)
 }
 )
@@ -150,28 +150,28 @@ setMethod("mapped", "ChIPQCsample", function(object){
 
 setGeneric("QCmetrics", function(object="ChIPQCsample") standardGeneric("QCmetrics"))
 setMethod("QCmetrics", "ChIPQCsample", function(object){
-   res        = c(reads(object,FALSE),
-                  signif((mapped(object)/reads(object,FALSE))*100,3),
-                  signif((1-reads(object,TRUE)/reads(object,FALSE))*100,3),
-                  signif(duplicateRate(object)*100,3),
-                  readlength(object),
-                  fragmentlength(object,width=readlength(object)),
-                  signif(RelativeCrossCoverage(object),3),
-                  #signif(FragmentLengthCrossCoverage(object),3),
-                  #signif(ReadLengthCrossCoverage(object),3),
-                  signif(ssd(object),3),
-                  signif(frip(object)*100,3))
-   names(res) = c("Reads",
-                  "Map%",
-                  "Filt%",
-                  "Dup%",
-                  "ReadL",
-                  "FragL",
-                  "RelCC",
-                  #"FragLenCC",
-                  #"ReadLenCC",
-                  "SSD",
-                  "RiP%")
+   reads <- unname(reads(object, FALSE))
+   reads.mapped <- signif((mapped(object) / reads(object, FALSE)) * 100, 3)
+   reads.filtered <- signif((1 - reads(object, TRUE) / reads(object, FALSE)) * 100, 3)
+   reads.dup <- unname(signif(duplicateRate(object) * 100, 3))
+   reads.lengths <- readlength(object)
+   reads.frags <- fragmentlength(object, width = readlength(object))
+   reads.relcc <- signif(RelativeCrossCoverage(object), 3)
+   reads.ssd <- signif(ssd(object), 3)
+   reads.rip <- signif(frip(object) * 100, 3)
+
+   res <- c(
+      `Reads` = reads,
+      `Map%` = ifelse(length(reads.mapped) == 0, 0, reads.mapped),
+      `Filt%` = ifelse(length(reads.filtered) == 0, 0, reads.filtered),
+      `Dup%` = ifelse(length(reads.dup) == 0, 0, reads.dup),
+      `ReadL` = ifelse(length(reads.lengths) == 0, 0, reads.lengths),
+      `FragL` = ifelse(length(reads.frags) == 0, 0, reads.frags),
+      `RelCC` = ifelse(length(reads.relcc) == 0, 0, reads.relcc),
+      `SSD` = ifelse(length(reads.ssd) == 0, 0, reads.ssd),
+      `RiP%` = ifelse(length(reads.rip) == 0, 0, reads.rip)
+   )
+
    blk = ribl(object)
    if(!is.na(blk)) {
       names(blk) <- "RiBL%"
