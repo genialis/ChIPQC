@@ -150,28 +150,28 @@ setMethod("mapped", "ChIPQCsample", function(object){
 
 setGeneric("QCmetrics", function(object="ChIPQCsample") standardGeneric("QCmetrics"))
 setMethod("QCmetrics", "ChIPQCsample", function(object){
-   res        = c(reads(object,FALSE),
-                  signif((mapped(object)/reads(object,FALSE))*100,3),
-                  signif((1-reads(object,TRUE)/reads(object,FALSE))*100,3),
-                  signif(duplicateRate(object)*100,3),
-                  readlength(object),
-                  fragmentlength(object,width=readlength(object)),
-                  signif(RelativeCrossCoverage(object),3),
-                  #signif(FragmentLengthCrossCoverage(object),3),
-                  #signif(ReadLengthCrossCoverage(object),3),
-                  signif(ssd(object),3),
-                  signif(frip(object)*100,3))
-   names(res) = c("Reads",
-                  "Map%",
-                  "Filt%",
-                  "Dup%",
-                  "ReadL",
-                  "FragL",
-                  "RelCC",
-                  #"FragLenCC",
-                  #"ReadLenCC",
-                  "SSD",
-                  "RiP%")
+   reads <- unname(reads(object, FALSE))
+   reads.mapped <- signif((mapped(object) / reads(object, FALSE)) * 100, 3)
+   reads.filtered <- signif((1 - reads(object, TRUE) / reads(object, FALSE)) * 100, 3)
+   reads.dup <- unname(signif(duplicateRate(object) * 100, 3))
+   reads.lengths <- readlength(object)
+   reads.frags <- fragmentlength(object, width = readlength(object))
+   reads.relcc <- signif(RelativeCrossCoverage(object), 3)
+   reads.ssd <- signif(ssd(object), 3)
+   reads.rip <- signif(frip(object) * 100, 3)
+   
+   res <- c(
+      `Reads` = reads,
+      `Map%` = ifelse(length(reads.mapped) == 0, 0, reads.mapped),
+      `Filt%` = ifelse(length(reads.filtered) == 0, 0, reads.filtered),
+      `Dup%` = ifelse(length(reads.dup) == 0, 0, reads.dup),
+      `ReadL` = ifelse(length(reads.lengths) == 0, 0, reads.lengths),
+      `FragL` = ifelse(length(reads.frags) == 0, 0, reads.frags),
+      `RelCC` = ifelse(length(reads.relcc) == 0, 0, reads.relcc),
+      `SSD` = ifelse(length(reads.ssd) == 0, 0, reads.ssd),
+      `RiP%` = ifelse(length(reads.rip) == 0, 0, reads.rip)
+   )
+
    blk = ribl(object)
    if(!is.na(blk)) {
       names(blk) <- "RiBL%"
