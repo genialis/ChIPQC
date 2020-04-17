@@ -1,0 +1,1 @@
+This is a local fork of a [Bioconductor package](https://www.bioconductor.org/packages/release/bioc/html/ChIPQC.html). Source code of the package has been downloaded from [here](https://www.bioconductor.org/packages/release/bioc/src/contrib/ChIPQC_1.22.0.tar.gz) and error cropping up in #1 fixed.
