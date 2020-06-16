@@ -15,7 +15,7 @@ table_RleList <- function(x)
 sampleQC <- function(bamFile,bedFile=NULL,blklist=NULL,ChrOfInterest=NULL,GeneAnnotation=NULL,Window=400,FragmentLength=50,
                      shiftWindowStart=1,shiftWindowEnd=2,mapQCutoff=15,runCrossCor=FALSE,verboseT=TRUE){
 
-  ChrLengths <- scanBamHeader(bamFile)[[1]]$targets
+  ChrLengths <- sort(scanBamHeader(bamFile)[[1]]$targets, decreasing=TRUE)
 
   if(length(ChrLengths[ChrLengths < shiftWindowEnd - shiftWindowStart]) > 0){
     message("Removing ",length(ChrLengths[ChrLengths < shiftWindowEnd - shiftWindowStart]),
@@ -101,7 +101,7 @@ sampleQC <- function(bamFile,bedFile=NULL,blklist=NULL,ChrOfInterest=NULL,GeneAn
       ShiftMat <- cbind(ShiftMat,ShiftMattemp)
     }else{
       if(k == 1){
-        tocheckforreads <- 1000
+        tocheckforreads <- if (length(temp) < 1000) length(temp) else 1000
         readlength=round(mean(width(temp[1:tocheckforreads])))
       }
       
