@@ -40,7 +40,8 @@ Columns names in sample sheet may include:
 \item {\dQuote{bayes}:} {bayesPeak file}
 \item {\dQuote{fp4}:}   {FindPeaks v4}
 }
-\item {PeakFormat:}     {string indicating format for peak files; see PeakCaller and  \code{\link{dba.peakset}}}
+\item {PeakFormat:}     {string indicating format for peak files; 
+see PeakCaller and  \code{\link{dba.peakset}}}
 \item {ScoreCol:}       {column in peak files that contains peak scores}
 \item {LowerBetter:}    {logical indicating that lower scores signify better peaks}
 }
@@ -73,7 +74,12 @@ If \code{consensus} is a \code{\link{GRanges}} object, all samples will use this
 }
 
 \item{bCount}{
-if \code{TRUE}, the peak scores for all samples will be based on read counts using \code{\link{dba.count}} using a consensus peakset. If \code{consenus} is missing, any samples (such as controls) that are not already associated with a peakset will be associated with the consensus peakset (if \code{consensus} is not missing, all samples will be associated with the consensus peakset). Note that the re-counting process may be time-consuming.
+if \code{TRUE}, the peak scores for all samples will be based on read counts using 
+\code{\link{dba.count}} using a consensus peakset. 
+If \code{consenus} is missing, any samples (such as controls) that are not already 
+associated with a peakset will be associated with the consensus peakset 
+(if \code{consensus} is not missing, all samples will be associated with the consensus peakset). 
+Note that the re-counting process may be time-consuming.
 }
 
 \item{mapQCth}{

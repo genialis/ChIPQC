@@ -1,22 +1,22 @@
 do_plotCorHeatmap = function(object,attributes,...) {
-   if(sum(as.numeric(as.vector(dba.show(QCdba(object))$Intervals)))==0) {
+   if(sum(as.numeric(as.vector(DiffBind::dba.show(QCdba(object))$Intervals)))==0) {
       message('No peaks to plot.')      
    }else{
       atts=getAtts(attributes=attributes)  
-      x = suppressWarnings(dba.plotHeatmap(object,attributes=atts,...))
+      x = suppressWarnings(DiffBind::dba.plotHeatmap(object,attributes=atts,...))
       invisible(x)
    }
 }
 
 do_plotPCA = function(object,attributes,label,...) {
-   if(sum(as.numeric(as.vector(dba.show(QCdba(object))$Intervals)))==0) {
+   if(sum(as.numeric(as.vector(DiffBind::dba.show(QCdba(object))$Intervals)))==0) {
       message('No peaks to plot.')      
    }else{
    atts=getAtts(attributes=attributes)
    if(!missing(label)){
       label=getAtts(attributes=label)
    }
-   x = suppressWarnings(dba.plotPCA(object,attributes=atts,label=label,...))
+   x = suppressWarnings(DiffBind::dba.plotPCA(object,attributes=atts,label=label,...))
    return(x)
    }
 }

@@ -2,6 +2,12 @@
 \title{ChIPQC News}
 \encoding{UTF-8}
 
+\section{Version 1.25.1}{
+ \itemize{
+  \item{Update to maintain compatibility with DiffBind 3.0}
+  }
+}
+
 \section{Version 1.13.2}{
  \itemize{
   \item{Fix build issue}

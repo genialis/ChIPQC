@@ -25,7 +25,7 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
                   profileWin=400,fragmentLength=125,shifts=1:300,...) {
   
   if(sum(class(experiment)=="character") || sum(class(experiment)=="data.frame")) {
-    experiment = dba(sampleSheet=experiment,bCorPlot=FALSE,peakCaller="bed")
+    experiment = DiffBind::dba(sampleSheet=experiment,peakCaller="bed")
   } 
   
   if(!sum(class(experiment)=="DBA")) {
@@ -46,7 +46,7 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
         experiment = addMatchingSample(experiment,i,meta,samples)
       }
     }
-    experiment = dba(experiment,bCorPlot=FALSE)
+    experiment = DiffBind::dba(experiment)
   }
   
   if(missing(chromosomes)) {
@@ -151,15 +151,15 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
       setNull <- FALSE   
     } else {
       setNull <- TRUE      
-      peaks <- dba.peakset(experiment,bRetrieve=T,numCols=3,
-                           DataType=DBA_DATA_FRAME)
+      peaks <- DiffBind::dba.peakset(experiment,bRetrieve=T,numCols=3,
+                                     DataType=DBA_DATA_FRAME)
     }
   } else if(bCount) {
     addcontrols <- TRUE
     if(consensus==FALSE) {
       setNull <- TRUE
-      peaks <- dba.peakset(experiment,bRetrieve=TRUE,
-                           DataType=DBA_DATA_FRAME)[,1:4]      
+      peaks <- DiffBind::dba.peakset(experiment,bRetrieve=TRUE,
+                                     DataType=DBA_DATA_FRAME)[,1:4]      
     }
   } 
   
@@ -168,14 +168,14 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
     startpos = length(samplelist) - controls
     for(i in 1:controls) {
       metadata   = getMeta(meta,names(samplelist)[[startpos+i]])
-      experiment = dba.peakset(experiment,peaks=peaks,
-                               sampID    = names(samplelist)[[startpos+i]],
-                               factor    = "Control",
-                               tissue    = metadata$tissue,
-                               condition = metadata$condition,
-                               treatment = metadata$treatment,
-                               replicate = sprintf("c%s",i),
-                               bamReads=samplelist[[startpos+i]]$bam)
+      experiment = DiffBind::dba.peakset(experiment,peaks=peaks,
+                                         sampID    = names(samplelist)[[startpos+i]],
+                                         factor    = "Control",
+                                         tissue    = metadata$tissue,
+                                         condition = metadata$condition,
+                                         treatment = metadata$treatment,
+                                         replicate = sprintf("c%s",i),
+                                         bamReads=samplelist[[startpos+i]]$bam)
     }
     meta = data.frame(t(experiment$class))
   }
@@ -187,10 +187,20 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
   if(bCount) {
     message('Counting reads in consensus peakset...')
     if(!is.null(peaks)) {
-      experiment = dba.count(experiment,peaks=peaks,mapQCth=mapQCth,...)    
+      if(!is.na(match("summits",names(list(...))))) {
+        experiment = DiffBind::dba.count(experiment,peaks=peaks,
+                                         mapQCth=mapQCth,...) 
+      } else {
+        experiment = DiffBind::dba.count(experiment,peaks=peaks,
+                                         summits=FALSE,mapQCth=mapQCth,...) 
+      }
       meta = data.frame(t(experiment$class))
     } else {
-      experiment = dba.count(experiment,mapQCth=mapQCth,...)   
+      if(!is.na(match("summits",names(list(...))))) {
+        experiment = DiffBind::dba.count(experiment,mapQCth=mapQCth,...) 
+      } else {
+        experiment = DiffBind::dba.count(experiment,summits=FALSE,mapQCth=mapQCth,...) 
+      }
       meta = data.frame(t(experiment$class))
     }
     if(nrow(meta) != length(samplelist)) {
@@ -198,7 +208,7 @@ ChIPQC = function(experiment, annotation, chromosomes, samples,
     }
   }
   if(nrow(experiment$merged)>0) {
-    peaks = dba.peakset(experiment,bRetrieve=TRUE)
+    peaks = DiffBind::dba.peakset(experiment,bRetrieve=TRUE)
   } else peaks = NULL
   
   if(addcontrols && addconsensus) {

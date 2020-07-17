@@ -1,4 +1,6 @@
 \name{ChIPQC-data}
+\alias{exampleExp}
+\alias{tamoxifen}
 \alias{tamoxifen_QC}
 \alias{example_QCexperiment}
 \alias{blacklist_hg19}
