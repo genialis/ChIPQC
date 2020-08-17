@@ -695,9 +695,14 @@ setMethod("plotRap", "list", function(object,facet=TRUE,
 
 makeRegiPlot <- function(regiScoresFrame){
   regiScoresFrame[,"GenomicIntervals"] <- factor(regiScoresFrame[,"GenomicIntervals"],levels=unique(as.vector(regiScoresFrame[,"GenomicIntervals"])))
-  Plot <- ggplot(regiScoresFrame, aes(Sample,GenomicIntervals))  
-  Plot <- Plot+geom_tile(aes(y=Sample,x=GenomicIntervals,fill = log2_Enrichment)) +
-    scale_fill_gradient2(low="blue",high="yellow",mid="black",midpoint=median(regiScoresFrame$log2_Enrichment))
+  Plot <- ggplot(regiScoresFrame, aes(x = GenomicIntervals, y = Sample))
+  Plot <- Plot +
+    geom_tile(aes(fill = log2_Enrichment)) +
+    scale_fill_gradient2(low="blue",high="yellow",mid="black",midpoint=median(regiScoresFrame$log2_Enrichment)) +
+    scale_x_discrete(guide = guide_axis(angle = 90)) +
+    theme(legend.position="top") +
+    ylab("")
+  
   return(Plot)
 }
 
