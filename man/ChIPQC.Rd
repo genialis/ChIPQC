@@ -17,7 +17,7 @@ ChIPQC(experiment, annotation, chromosomes, samples,
   \item{experiment}{
 A specification of the ChIP-seq experiment to evaluate. 
 This can either be a dataframe, a filename for a .csv file, 
-or a \code{\link{DBA}} object as defined in the \code{\link{DiffBind}} package.
+or a \code{\link{DBA-object}} object as defined in the \code{\link{DiffBind}} package.
 Columns names in sample sheet may include:
 \itemize{
 \item {SampleID:}       {Identifier string for sample}
@@ -103,7 +103,11 @@ additional parameters passed to \code{\link{dba.count}} if \code{bCount=TRUE}.
 }
 }
 \details{
-ChIPQC first constructs a new \code{\link{DBA}} object if one is not provided. Next it computes the annotation if one is not provided. The main loop constructs new \code{\link{ChIPQCsample}} objects for each sample (and unique control sample).
+ChIPQC first constructs a new \code{\link{DBA-object}} object 
+if one is not provided. 
+Next it computes the annotation if one is not provided. 
+The main loop constructs new \code{\link{ChIPQCsample}} objects for 
+each sample (and unique control sample).
 }
 \value{
 A \code{\link{ChIPQCexperiment}} object.

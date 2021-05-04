@@ -3,16 +3,16 @@
 \alias{QCdba}
 \alias{QCdba-methods}
 \alias{QCdba,ChIPQCexperiment-method}
-\title{Retrieve the \code{\link{DBA}} object associated with an experiment}
+\title{Retrieve the \code{\link{DBA-object}} object associated with an experiment}
 \description{
-Retrieve the \code{\link{DBA}} object associated with a \code{\link{ChIPQCexperiment}} object.
+Retrieve the \code{\link{DBA-object}} object associated with a \code{\link{ChIPQCexperiment}} object.
 }
 \section{Methods}{
 \describe{
 
 \item{\code{signature(object = "ChIPQCexperiment")}}{
 
-Retrieves the \code{\link{DBA}} object associated with a \code{\link{ChIPQCexperiment}}. This object can be used with \code{\link{DiffBind}} functions to further analyse a ChIP-seq experiment, including performing a differential binding analysis.
+Retrieves the \code{\link{DBA-object}} object associated with a \code{\link{ChIPQCexperiment}}. This object can be used with \code{\link{DiffBind}} functions to further analyse a ChIP-seq experiment, including performing a differential binding analysis.
 }
 }}
 \keyword{methods}

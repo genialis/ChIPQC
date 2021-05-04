@@ -16,7 +16,7 @@ The \code{ChIPQCexperiment} class is built around a list of \code{\link{ChIPQCsa
   \describe{
     \item{\code{.Data}:}{Object of class \code{"list"}: internal}
     \item{\code{Samples}:}{Object of class \code{"list"}: List of \code{\link{ChIPQCsample}} objects.}
-    \item{\code{DBA}:}{Object of class \code{"DBA"}: \code{\link{DBA}} object (from package \code{\link{DiffBind}})}
+    \item{\code{DBA}:}{Object of class \code{"DBA"}: \code{\link{DBA-object}} object (from package \code{\link{DiffBind}})}
     \item{\code{annotation}:}{Object of class \code{"list"} : annotation data}
   }
 }
