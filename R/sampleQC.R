@@ -101,7 +101,7 @@ sampleQC <- function(bamFile,bedFile=NULL,blklist=NULL,ChrOfInterest=NULL,GeneAn
       ShiftMat <- cbind(ShiftMat,ShiftMattemp)
     }else{
       if(k == 1){
-        tocheckforreads <- 1000
+        tocheckforreads <- min(1000,length(temp))
         readlength=round(mean(width(temp[1:tocheckforreads])))
       }
       

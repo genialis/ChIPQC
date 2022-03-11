@@ -2,6 +2,13 @@
 \title{ChIPQC News}
 \encoding{UTF-8}
 
+\section{Version 1.31.2}{
+ \itemize{
+  \item{bugfixes}
+  \item{handle larger plots}
+  }
+}
+
 \section{Version 1.25.1}{
  \itemize{
   \item{Update to maintain compatibility with DiffBind 3.0}
